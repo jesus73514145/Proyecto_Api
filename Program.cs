@@ -30,6 +30,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+
+//Registro mi logica customizada y reuzable
+builder.Services.AddScoped<PostService, PostService>();
+
+
 //Registro de las integraciones para APIS 28/10/2023
 builder.Services.AddScoped<JsonplaceholderAPIIntegration, JsonplaceholderAPIIntegration>();
 
