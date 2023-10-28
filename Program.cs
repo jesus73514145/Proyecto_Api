@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Api.Data;
+using Proyecto_Api.DTO;
+using Proyecto_Api.Service;
 using Proyecto_Api.Models;
 using Proyecto_Api.Integrations;
 using Microsoft.OpenApi.Models;
