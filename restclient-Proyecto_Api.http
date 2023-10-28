@@ -1,0 +1,6 @@
+GET http://localhost:5276/api/producto/
+Accept: application/json
+
+// si no funciona con http prueba con https
+GET http://localhost:5276/api/producto/1
+Accept: application/json
