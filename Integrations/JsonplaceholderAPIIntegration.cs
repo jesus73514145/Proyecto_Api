@@ -23,17 +23,23 @@ namespace Proyecto_Api.Integrations
         // Método para listar todos los posts
         public async Task<List<PostDTO>> GetAllPostsAsync()
         {
+            string requestUrl = $"{API_URL}";
+            List<PostDTO> listado = new List<PostDTO>();
             try
             {
-                HttpResponseMessage response = await _client.GetAsync(API_URL);
-                string content = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<PostDTO>>(content);
+                HttpResponseMessage response = await _client.GetAsync(requestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    listado = await response.Content.ReadFromJsonAsync<List<PostDTO>>() ?? new List<PostDTO>();
+
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener todos los posts: {ex.Message}");
-                return new List<PostDTO>();
+                 _logger.LogDebug($"Error al llamar a la API: {ex.Message}");
             }
+
+            return listado;
         }
 
         // Método para crear un nuevo post
@@ -41,8 +47,9 @@ namespace Proyecto_Api.Integrations
         {
             try
             {
+                string requestUrl = $"{API_URL}";
                 StringContent content = new StringContent(JsonSerializer.Serialize(post), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _client.PostAsync(API_URL, content);
+                HttpResponseMessage response = await _client.PostAsync(requestUrl, content);
                 string responseBody = await response.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<PostDTO>(responseBody);
             }
@@ -58,7 +65,8 @@ namespace Proyecto_Api.Integrations
         {
             try
             {
-                HttpResponseMessage response = await _client.GetAsync(API_URL + id);
+                string requestUrl = $"{API_URL}";
+                HttpResponseMessage response = await _client.GetAsync(requestUrl + id);
                 string content = await response.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<PostDTO>(content);
             }
@@ -74,8 +82,9 @@ namespace Proyecto_Api.Integrations
         {
             try
             {
+                string requestUrl = $"{API_URL}";
                 StringContent content = new StringContent(JsonSerializer.Serialize(post), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _client.PutAsync(API_URL + id, content);
+                HttpResponseMessage response = await _client.PutAsync(requestUrl + id, content);
                 string responseBody = await response.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<PostDTO>(responseBody);
             }
@@ -91,7 +100,8 @@ namespace Proyecto_Api.Integrations
         {
             try
             {
-                HttpResponseMessage response = await _client.DeleteAsync(API_URL + id);
+                string requestUrl = $"{API_URL}";
+                HttpResponseMessage response = await _client.DeleteAsync(requestUrl + id);
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
