@@ -3,6 +3,14 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenido xdxd</h1>
+    <p>Más información sobre <a href="https://docs.microsoft.com/aspnet/core">creación de aplicaciones web con ASP.NET
+            Core</a>.</p>
 </div>
+
+@if (TempData["Excelente"] != null)
+{
+  <div class="alert alert-success" style="font-size: 22px; padding: 10px;">
+    @TempData["Excelente"]
+  </div>
+}
