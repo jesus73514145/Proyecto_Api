@@ -1,5 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,44 +11,386 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Proyecto_Api.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
+
+        :root {
+            --my-blue: #0074E4;
+            --light-my-blue: #6FA6FF;
+            /* Aquí defines el tono más claro */
+            --yellow: #40E0D0;
+            --light-yellow: hsl(177, 72%, 70%);
+            --amarillo: #f9d806;
+            --light-amarillo: #ffee80;
+            --rojo: #FF0000;
+            --light-rojo: #FFAFAF;
+            --verde: #369681;
+            --light-verde: #00B050;
+            --black: #130f40;
+            --light-color: #666;
+            --border: .1rem solid rgba(0, 0, 0, .1);
+            --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+        }
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+            transition: all .2s linear;
+        }
+
+        body {
+            margin-bottom: 0px;
+        }
+
+        html {
+            font-size: 50.5%;
+            overflow-x: hidden;
+            scroll-padding-top: 7rem;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            padding: 2rem 6%;
+        }
+
+        /* header */
+
+        /* hasta aca arriba */
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            border-radius: .5rem;
+            background: var(--light-yellow);
+            color: var(--black);
+            font-weight: 500;
+            font-size: 1.7rem;
+            cursor: pointer;
+            padding: .8rem 3rem;
+        }
+
+        .btn:hover {
+            background: var(--yellow);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 9%;
+        }
+
+        .header .logo {
+            font-size: 2.5rem;
+            color: var(--black);
+            font-weight: bolder;
+        }
+
+        .header .logo span {
+            color: var(--yellow);
+        }
+
+        .header #logo.text-decoration-none {
+            text-decoration: none !important;
+        }
+
+        .header .navbar a {
+            font-size: 1.7rem;
+            margin: 0 1rem;
+            color: var(--black);
+        }
+
+        .header .navbar a:hover {
+            color: var(--yellow);
+        }
+
+        .header .btn {
+            margin-top: 0;
+        }
+
+        #menu-btn {
+            font-size: 2.5rem;
+            color: var(--light-color);
+            cursor: pointer;
+            display: none;
+        }
+
+        .header.active {
+            box-shadow: var(--box-shadow);
+            padding: 2rem 9%;
+        }
+
+        .header .iconosxd a {
+            height: 4.5rem;
+            width: 4.5rem;
+            line-height: 4.5rem;
+            border-radius: .5rem;
+            background: var(--light-yellow);
+            color: var(--black);
+            font-size: 2rem;
+            margin-left: .3rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .header .iconosxd a:hover {
+            background: var(--yellow);
+            color: #fff;
+        }
+
+        /* section jesus */
+        .jesus {
+            padding-top: 13rem;
+            text-align: center;
+        }
+
+        /* footer section  */
+
+        .footer {
+            background: var(--light-yellow);
+        }
+
+        .footer .box-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+            gap: 1.5rem;
+        }
+
+        .footer .box-container .box h3 {
+            color: var(--black);
+            font-size: 1.2rem;
+            padding: 1rem 0;
+        }
+
+        .footer .box-container .box a {
+            color: var(--light-color);
+            font-size: 1.1rem;
+            display: block;
+            padding: 1rem 0;
+        }
+
+        .footer .box-container .box a i {
+            padding-right: .5rem;
+            color: var(--black);
+        }
+
+        .footer .box-container .box a:hover i {
+            padding-right: 2rem;
+            /* este codigo hace que las palabras en el footer se muevan para la izquierda o derecha la cosa es que se mueve */
+        }
+
+        .iconosxd {
+            display: flex;
+            align-items: center;
+            /* Opcional: para alinear verticalmente los elementos en el centro */
+        }
+
+        .footer .credit {
+            text-align: center;
+            border-top: var(--border);
+            padding: 1rem;
+            padding-top: 2.5rem;
+            margin-top: 2rem;
+            font-size: 2rem;
+        }
+
+        .header .iconosxd .custom-user-info a {
+            height: 4.2rem;
+            width: auto;
+            line-height: 4.5rem;
+            border-radius: .5rem;
+            background: var(--light-yellow);
+            color: var(--black);
+            font-size: 1.2rem;
+            margin-left: .3rem;
+            margin: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .header .iconosxd .custom-user-info a:hover {
+            background: var(--yellow);
+            color: #fff;
+        }
+
+        /*------------------ media queries ---------------------- */
+
+        @@media (max-width:991px) {
+            html {
+                font-size: 55%;
+            }
+
+            .header {
+                padding: 2rem;
+            }
+
+            .header.active {
+                padding: 2rem;
+            }
+
+            section {
+                padding: 2rem;
+            }
+        }
+
+        @@media (max-width:768px) {
+            #menu-btn {
+                display: block;
+            }
+
+            #menu-btn.fa-times {
+                transform: rotate(180deg);
+            }
+
+            .header .navbar {
+                position: absolute;
+                top: 99%;
+                left: 0;
+                right: 0;
+                background: #fff;
+                border-top: var(--border);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            }
+
+            /* con este codigo hago que se muestre el navbar activandolo */
+            .header .navbar.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+            }
+
+            .header .navbar a {
+                display: block;
+                margin: 2rem;
+                font-size: 2rem;
+            }
+        }
+
+        @@media (max-width:450px) {
+            html {
+                font-size: 50%;
+            }
+
+            /* ese codigo es hasta aca arriba */
+        }
+    </style>
+
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto_Api</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
+    <!---------------------------- header section stars ---------------------------->
+    <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a class="logo" style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index">
+            <span>Proyecto</span>Api </a>
+        <nav class="navbar">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </nav>
+
+        <div class="iconosxd">
+            @if (SignInManager.IsSignedIn(User))
+            {
+
+               
+
+                <div class="nav-item custom-user-info">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello
+                        @User.Identity?.Name!</a>
+                </div>
+                <div>
+                    <a class="fas fa-sign-out-alt" asp-area="Identity" asp-page="/Account/Logout"
+                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"></a>
+                </div>
+            }
+            else
+            {
+
+                <a class="fas fa-user-plus" style="text-decoration: none;" asp-area="Identity"
+                    asp-page="/Account/Register"></a>
+                <a class="fas fa-sign-in-alt" style="text-decoration: none;" asp-area="Identity"
+                    asp-page="/Account/Login"></a>
+            }
+        </div>
+
     </header>
+
+    <section class="jesus">
+
+    </section>
+    <!---------------------------- header section ends ---------------------------->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Proyecto_Api - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!---------------------------- footer section stars  ---------------------------->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>Enlaces Rápidos</h3>
+                <a href="#"> <i class="fas fa-arrow-right"></i> Principal </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> Privacy </a>
+              
+            </div>
+
+            <div class="box">
+                <h3>Datos De Contacto</h3>
+                <a> <i class="fas fa-phone"></i> +51 927 572 267 </a>
+                <a> <i class="fas fa-envelope"></i> jesus_soria@usmp.pe </a>
+                <a> <i class="fas fa-map-marker-alt"></i> Av. Prol. Javier Prado Este 8680, Ate 15494 </a>
+            </div>
+
+            <div class="box">
+                <h3>Redes</h3>
+                <a href="https://www.facebook.com/fia.usmp"> <i class="fab fa-facebook-f"></i> Facebook </a>
+                <a href="https://api.whatsapp.com/send?phone=927572267" target="_blank"><i class="fab fa-whatsapp"></i>
+                    WhatsApp</a>
+                <br><br>
+                <h3>Legal</h3>
+                <a href="#"> <i class="fa fa-gavel"></i> Términos y Condiciones </a>
+                <a href="#"> <i class="fa fa-lock"></i> Politicas de privacidad </a>
+            </div>
+
+            <div class="box">
+                <h3>Desarrolladores</h3>
+
+                <a> <i class="fas fa-user-cog"></i> Jesús A. Soria Llantoy </a>
+            </div>
         </div>
-    </footer>
+        <div class="credit"> @@Copyright - Todos los derechos reservados! </div>
+    </section>
+    <!---------------------------- footer section ends  ---------------------------->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <script>
+        let menu = document.querySelector('#menu-btn');
+        let navbar = document.querySelector('.navbar');
+
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('active');
+        }
+
+        /**/
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

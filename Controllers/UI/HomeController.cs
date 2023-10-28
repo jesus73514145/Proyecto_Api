@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_Api.Models;
 
-namespace Proyecto_Api.Controllers;
+namespace Proyecto_Api.Controllers.UI;
 
 public class HomeController : Controller
 {
