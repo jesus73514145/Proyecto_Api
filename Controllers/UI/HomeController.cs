@@ -83,7 +83,7 @@ public class HomeController : Controller
     {
         await _jsonplaceholder.DeletePostAsync(id);
         TempData["Excelente"] = "Se elimino exitosamente ese post";
-        return RedirectToAction("Index");
+        return RedirectToAction("ListaPosts");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

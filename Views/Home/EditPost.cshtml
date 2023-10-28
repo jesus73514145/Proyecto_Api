@@ -6,20 +6,20 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="EditPost" method="post">
-    <input type="hidden" name="Id" value="@Model.Id" />
+<form asp-controller="Home" asp-action="EditPost" method="post">
+    <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label for="userId">ID del Usuario</label>
-        <input type="number" class="form-control" id="userId" name="UserId" required value="@Model.UserId">
+        <label asp-for="UserId">ID del Usuario</label>
+        <input type="number" class="form-control" asp-for="UserId" required/>
     </div>
     <div class="form-group">
-        <label for="title">Título</label>
-        <input type="text" class="form-control" id="title" name="Title" required value="@Model.Title">
+        <label asp-for="Title">Título</label>
+        <input type="text" class="form-control" asp-for="Title" required/>
     </div>
     <div class="form-group">
-        <label for="body">Cuerpo</label>
-        <textarea class="form-control" id="body" name="Body" rows="5" required>@Model.Body</textarea>
+        <label asp-for="Body">Cuerpo</label>
+        <textarea class="form-control" asp-for="Body" rows="5" required></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>

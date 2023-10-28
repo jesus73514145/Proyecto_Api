@@ -4,6 +4,13 @@
     ViewData["Title"] = "Lista de Posts";
 }
 
+@if (TempData["Excelente"] != null)
+{
+  <div class="alert alert-success" style="font-size: 22px; padding: 10px;">
+    @TempData["Excelente"]
+  </div>
+}
+
 <h2>@ViewData["Title"]</h2>
 
 <table class="table table-bordered">
@@ -25,12 +32,19 @@
                 <td>@post.Title</td>
                 <td>@post.Body</td>
                 <td>
-                    <a asp-action="EditPost" asp-route-id="@post.Id" class="btn btn-warning">Editar</a>
-                    <a asp-action="DeletePost" asp-route-id="@post.Id" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este post?');">Eliminar</a>
+                    <a asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id" class="btn btn-warning">Editar</a>
+                    <a asp-controller="Home" asp-action="DeletePost" asp-route-id="@post.Id" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este post?');">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="CreatePost" class="btn btn-primary">Crear nuevo post</a>
+<a asp-controller="Home" asp-action="CreatePost" class="btn btn-primary">Crear nuevo post</a>
+
+@if (TempData["Excelente"] != null)
+{
+  <div class="alert alert-success" style="font-size: 22px; padding: 10px;">
+    @TempData["Excelente"]
+  </div>
+}

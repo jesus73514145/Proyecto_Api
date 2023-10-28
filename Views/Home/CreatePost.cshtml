@@ -6,7 +6,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="CreatePost" method="post">
+<form asp-controller="Home" asp-action="CreatePost" method="post">
     <div class="form-group">
         <label for="userId">ID del Usuario</label>
         <input type="number" class="form-control" id="userId" name="UserId" required placeholder="Introduce el ID del usuario" >
