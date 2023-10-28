@@ -17,6 +17,8 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly JsonplaceholderAPIIntegration _jsonplaceholder;
+
+    
     public HomeController(ILogger<HomeController> logger, JsonplaceholderAPIIntegration jsonplaceholder)
     {
         _logger = logger;
@@ -58,14 +60,33 @@ public class HomeController : Controller
         {
             return NotFound();
         }
+
+        /*PostViewModel postViewModel = new PostViewModel();
+        postViewModel.Id = post.Id;
+        postViewModel.UserId = post.UserId;
+        postViewModel.Title = post.Title;
+        postViewModel.Body = post.Body;*/
+
+        //return View("EditPost", postViewModel);
         return View(post);
     }
 
     [HttpPost]
     public async Task<IActionResult> EditPost(int id, PostDTO post)
     {
+
+
+
         if (ModelState.IsValid)
         {
+
+            /*PostDTO postDTO = await _jsonplaceholder.GetPostByIdAsync(id);
+            postDTO.Id = postViewModel.Id;
+            postDTO.UserId = postViewModel.UserId;
+            postDTO.Title = postViewModel.Title;
+            postDTO.Body = postViewModel.Body;*/
+
+
             await _jsonplaceholder.UpdatePostAsync(id, post);
             TempData["Excelente"] = "Se edito exitosamente ese post";
             return RedirectToAction("Index");

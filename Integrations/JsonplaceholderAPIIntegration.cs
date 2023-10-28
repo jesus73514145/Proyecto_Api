@@ -45,109 +45,113 @@ namespace Proyecto_Api.Integrations
             }
 
             // Combina los posts de la API con los posts locales
-            return listado.Concat(localPosts).ToList();
+            return listado;
         }
 
         // Método para crear un nuevo post
+        // Método para crear un nuevo post
         public async Task<PostDTO> CreatePostAsync(PostDTO post)
         {
+            string requestUrl = $"{API_URL}";
             try
             {
-                /*string requestUrl = $"{API_URL}";
-                StringContent content = new StringContent(JsonSerializer.Serialize(post), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _client.PostAsync(requestUrl, content);
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<PostDTO>(responseBody);*/
+                HttpResponseMessage response = await _client.PostAsJsonAsync(requestUrl, post);
 
-                post.Id = localPosts.Any() ? localPosts.Max(p => p.Id) + 1 : 1; // Asignamos un nuevo ID
-                localPosts.Add(post);
-                return post;
+                if (response.IsSuccessStatusCode)
+                {
+                    // Si la operación es exitosa, devuelve el objeto PostDTO creado
+                    string content = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<PostDTO>(content);
+                }
+                else
+                {
+                    // Maneja el caso en que la solicitud no sea exitosa
+                    _logger.LogError($"Error al crear un nuevo registro. Código de estado: {response.StatusCode}");
+                    return null; // O puedes lanzar una excepción si prefieres
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear el post: {ex.Message}");
-                return null;
+                // Maneja las excepciones que puedan ocurrir durante la solicitud
+                _logger.LogError($"Error al crear un nuevo registro: {ex.Message}");
+                return null; // O puedes lanzar una excepción si prefieres
             }
         }
 
         // Método para obtener un post específico por ID
         public async Task<PostDTO> GetPostByIdAsync(int id)
         {
-            var localPost = localPosts.FirstOrDefault(p => p.Id == id);
-            if (localPost != null)
-            {
-                return localPost;
-            }
-
             try
             {
-                string requestUrl = $"{API_URL}";
-                HttpResponseMessage response = await _client.GetAsync(requestUrl + id);
-                string content = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<PostDTO>(content);
+                // Realiza una solicitud HTTP GET a la API externa para obtener el objeto por su ID
+                string requestUrl = $"{API_URL}/{id}";
+                HttpResponseMessage response = await _client.GetAsync(requestUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Lee y deserializa el contenido de la respuesta en un objeto PostDTO
+                    string content = await response.Content.ReadAsStringAsync();
+                    PostDTO post = JsonSerializer.Deserialize<PostDTO>(content);
+                    return post;
+                }
+                else
+                {
+                    // Maneja el caso en que la solicitud no sea exitosa (puedes registrar un error, lanzar una excepción, etc.)
+                    _logger.LogError($"La solicitud a la API no fue exitosa. Código de estado: {response.StatusCode}");
+                }
             }
             catch (Exception ex)
             {
+                // Maneja las excepciones que puedan ocurrir durante la solicitud
                 _logger.LogError($"Error al obtener el post con ID {id}: {ex.Message}");
-                return null;
             }
+
+            // En caso de error o solicitud no exitosa, devuelve null o un valor predeterminado
+            return null;
         }
 
         // Método para actualizar un post
+        // Método para actualizar un post
         public async Task<PostDTO> UpdatePostAsync(int id, PostDTO updatedPost)
         {
+            string requestUrl = $"{API_URL}/{id}";
             try
             {
-                /*string requestUrl = $"{API_URL}";
-                StringContent content = new StringContent(JsonSerializer.Serialize(post), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _client.PutAsync(requestUrl + id, content);
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<PostDTO>(responseBody);*/
+                HttpResponseMessage response = await _client.PutAsJsonAsync(requestUrl, updatedPost);
 
-                var localPost = localPosts.FirstOrDefault(p => p.Id == id);
-                if (localPost != null)
+                if (response.IsSuccessStatusCode)
                 {
-                    localPost.Title = updatedPost.Title;
-                    localPost.Body = updatedPost.Body;
-                    return localPost;
+                    // Si la operación es exitosa, devuelve el objeto PostDTO actualizado
+                    string content = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<PostDTO>(content);
                 }
-
-                // Si el post no está en la lista local, lo añade a la lista local
-                localPosts.Add(updatedPost);
-                return updatedPost;
-
+                else
+                {
+                    // Maneja el caso en que la solicitud no sea exitosa
+                    _logger.LogError($"Error al actualizar el registro. Código de estado: {response.StatusCode}");
+                    return null; // O puedes lanzar una excepción si prefieres
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar el post con ID {id}: {ex.Message}");
-                return null;
+                // Maneja las excepciones que puedan ocurrir durante la solicitud
+                _logger.LogError($"Error al actualizar el registro: {ex.Message}");
+                return null; // O puedes lanzar una excepción si prefieres
             }
         }
 
         // Método para eliminar un post
         public async Task<bool> DeletePostAsync(int id)
         {
+            string requestUrl = $"{API_URL}/{id}";
             try
             {
-                var localPost = localPosts.FirstOrDefault(p => p.Id == id);
-                if (localPost != null)
-                {
-                    localPosts.Remove(localPost);
-                    return true;
-                }
-
-                // Si el post no está en la lista local, lo marca como eliminado
-                localPost = new PostDTO { Id = id, IsDeleted = true };
-                localPosts.Add(localPost);
-                return true;
-
-                /*string requestUrl = $"{API_URL}";
-                HttpResponseMessage response = await _client.DeleteAsync(requestUrl + id);
-                return response.IsSuccessStatusCode;*/
+                HttpResponseMessage response = await _client.DeleteAsync(requestUrl);
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar el post con ID {id}: {ex.Message}");
+                _logger.LogDebug($"Error al eliminar el registro: {ex.Message}");
                 return false;
             }
         }
