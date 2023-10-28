@@ -84,7 +84,7 @@ namespace Proyecto_Api.Integrations
             try
             {
                 // Realiza una solicitud HTTP GET a la API externa para obtener el objeto por su ID
-                string requestUrl = $"{API_URL}/{id}";
+                string requestUrl = $"{API_URL}{id}";
                 HttpResponseMessage response = await _client.GetAsync(requestUrl);
 
                 if (response.IsSuccessStatusCode)
@@ -114,7 +114,7 @@ namespace Proyecto_Api.Integrations
         // Método para actualizar un post
         public async Task<PostDTO> UpdatePostAsync(int id, PostDTO updatedPost)
         {
-            string requestUrl = $"{API_URL}/{id}";
+            string requestUrl = $"{API_URL}{id}";
             try
             {
                 HttpResponseMessage response = await _client.PutAsJsonAsync(requestUrl, updatedPost);
@@ -143,7 +143,7 @@ namespace Proyecto_Api.Integrations
         // Método para eliminar un post
         public async Task<bool> DeletePostAsync(int id)
         {
-            string requestUrl = $"{API_URL}/{id}";
+            string requestUrl = $"{API_URL}{id}";
             try
             {
                 HttpResponseMessage response = await _client.DeleteAsync(requestUrl);
