@@ -35,6 +35,17 @@ public class HomeController : Controller
         return View();
     }
 
+    public async Task<IActionResult> DetallePost(int id)
+    {
+        var post = await _jsonplaceholder.GetPostByIdAsync(id);
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        return View(post);
+    }
+
     public IActionResult CreatePost()
     {
         var post = new PostDTO();
@@ -48,7 +59,7 @@ public class HomeController : Controller
         {
             await _jsonplaceholder.CreatePostAsync(post);
             TempData["Excelente"] = "Se creo exitosamente ese post";
-            return RedirectToAction("Index");
+            return RedirectToAction("CreatePost");
         }
         return View(post);
     }
@@ -75,8 +86,6 @@ public class HomeController : Controller
     public async Task<IActionResult> EditPost(int id, PostDTO post)
     {
 
-
-
         if (ModelState.IsValid)
         {
 
@@ -89,7 +98,7 @@ public class HomeController : Controller
 
             await _jsonplaceholder.UpdatePostAsync(id, post);
             TempData["Excelente"] = "Se edito exitosamente ese post";
-            return RedirectToAction("Index");
+            return RedirectToAction("EditPost");
         }
         return View(post);
     }

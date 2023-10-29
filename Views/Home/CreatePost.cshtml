@@ -21,3 +21,10 @@
     </div>
     <button type="submit" class="btn btn-primary">Registrar</button>
 </form>
+<br>
+@if (TempData["Excelente"] != null)
+{
+  <div class="alert alert-success" style="font-size: 22px; padding: 10px;">
+    @TempData["Excelente"]
+  </div>
+}

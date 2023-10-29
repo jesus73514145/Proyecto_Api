@@ -32,6 +32,7 @@
                 <td>@post.Title</td>
                 <td>@post.Body</td>
                 <td>
+                    <a asp-controller="Home" asp-action="DetallePost" asp-route-id="@post.Id" class="btn btn-warning">Detalle</a>
                     <a asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id" class="btn btn-warning">Editar</a>
                     <a asp-controller="Home" asp-action="DeletePost" asp-route-id="@post.Id" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este post?');">Eliminar</a>
                 </td>
