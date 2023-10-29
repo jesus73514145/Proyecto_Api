@@ -16,7 +16,7 @@ using Proyecto_Api.Service;
 namespace Proyecto_Api.Controllers.Rest
 {
     [ApiController]
-    [Route("api/producto")]
+    [Route("api/post")]
     public class PostApiController : ControllerBase
     {
    
