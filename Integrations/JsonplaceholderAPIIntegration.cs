@@ -44,11 +44,11 @@ namespace Proyecto_Api.Integrations
                 _logger.LogDebug($"Error al llamar a la API: {ex.Message}");
             }
 
-            // Combina los posts de la API con los posts locales
+       
             return listado;
         }
 
-        // Método para crear un nuevo post
+     
         // Método para crear un nuevo post
         public async Task<PostDTO> CreatePostAsync(PostDTO post)
         {
@@ -59,22 +59,22 @@ namespace Proyecto_Api.Integrations
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Si la operación es exitosa, devuelve el objeto PostDTO creado
+                 
                     string content = await response.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<PostDTO>(content);
                 }
                 else
                 {
-                    // Maneja el caso en que la solicitud no sea exitosa
+                   
                     _logger.LogError($"Error al crear un nuevo registro. Código de estado: {response.StatusCode}");
-                    return null; // O puedes lanzar una excepción si prefieres
+                    return null;
                 }
             }
             catch (Exception ex)
             {
-                // Maneja las excepciones que puedan ocurrir durante la solicitud
+             
                 _logger.LogError($"Error al crear un nuevo registro: {ex.Message}");
-                return null; // O puedes lanzar una excepción si prefieres
+                return null; 
             }
         }
 
@@ -96,21 +96,20 @@ namespace Proyecto_Api.Integrations
                 }
                 else
                 {
-                    // Maneja el caso en que la solicitud no sea exitosa (puedes registrar un error, lanzar una excepción, etc.)
                     _logger.LogError($"La solicitud a la API no fue exitosa. Código de estado: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                // Maneja las excepciones que puedan ocurrir durante la solicitud
+          
                 _logger.LogError($"Error al obtener el post con ID {id}: {ex.Message}");
             }
 
-            // En caso de error o solicitud no exitosa, devuelve null o un valor predeterminado
+          
             return null;
         }
 
-        // Método para actualizar un post
+     
         // Método para actualizar un post
         public async Task<PostDTO> UpdatePostAsync(int id, PostDTO updatedPost)
         {
@@ -129,14 +128,14 @@ namespace Proyecto_Api.Integrations
                 {
                     // Maneja el caso en que la solicitud no sea exitosa
                     _logger.LogError($"Error al actualizar el registro. Código de estado: {response.StatusCode}");
-                    return null; // O puedes lanzar una excepción si prefieres
+                    return null;
                 }
             }
             catch (Exception ex)
             {
                 // Maneja las excepciones que puedan ocurrir durante la solicitud
                 _logger.LogError($"Error al actualizar el registro: {ex.Message}");
-                return null; // O puedes lanzar una excepción si prefieres
+                return null; 
             }
         }
 

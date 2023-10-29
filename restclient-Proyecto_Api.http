@@ -1,6 +1,5 @@
 GET http://localhost:5276/api/post/
 Accept: application/json
 
-// si no funciona con http prueba con https
 GET http://localhost:5276/api/post/1
 Accept: application/json
