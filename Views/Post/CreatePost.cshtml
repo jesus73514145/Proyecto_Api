@@ -6,18 +6,18 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-controller="Home" asp-action="CreatePost" method="post">
+<form asp-controller="Post" asp-action="CreatePost" method="post">
     <div class="form-group">
-        <label for="userId">ID del Usuario</label>
-        <input type="number" class="form-control" id="userId" name="UserId" required placeholder="Introduce el ID del usuario" >
+        <label asp-for="userId">ID del Usuario</label>
+        <input type="number" class="form-control" id="userId" asp-for="userId" required placeholder="Introduce el ID del usuario" >
     </div>
     <div class="form-group">
         <label for="title">Título</label>
-        <input type="text" class="form-control" id="title" name="Title" required placeholder="Introduce el título del post" >
+        <input type="text" class="form-control" id="title" asp-for="title" required placeholder="Introduce el título del post" >
     </div>
     <div class="form-group">
         <label for="body">Cuerpo</label>
-        <textarea class="form-control" id="body" name="Body" rows="5" required placeholder="Introduce el contenido del post"></textarea>
+        <textarea class="form-control" id="body" asp-for="body" rows="5" required placeholder="Introduce el contenido del post"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Registrar</button>
 </form>

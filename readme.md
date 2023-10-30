@@ -11,29 +11,31 @@ http://localhost:5276/swagger/index.html
 ## VISTA DE LISTA DE POSTS
 En esta vista se muestra los 100 datos de este link https://jsonplaceholder.typicode.com/posts/ 
 
+![Alt text](image-1.png)
+## VISTA DE REGISTRAR POST
+En esta vista se podra registrar un nuevo post
 ![Alt text](image-2.png)
 
 ![Alt text](image-3.png)
-
-## VISTA DE REGISTRAR POST
-En esta vista se podra registrar un nuevo post
+## VISTA DE EDITAR POST
+En esta vista se podra editar un post
 ![Alt text](image-4.png)
 
 ![Alt text](image-5.png)
 
-## VISTA DE EDITAR POST
-En esta vista se podra editar un post
 ![Alt text](image-6.png)
 
-![Alt text](image-7.png)
 ## VISTA DE MIRAR UN POST
 En esta vista se podra mirar un post
-![Alt text](image-8.png)
+![Alt text](image-7.png)
 
 ## MENSAJE PARA ELIMINAR UN POST
 En esta vista se podra mirar un cuadro para confirmar el eliminar un post
+![Alt text](image-8.png)
+
 ![Alt text](image-9.png)
 
+## VISTA DE MI TERMINAL
 ![Alt text](image-10.png)
 
 ## Los 100 datos del jsonplaceholder

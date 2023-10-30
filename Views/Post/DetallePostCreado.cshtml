@@ -1,0 +1,35 @@
+@model Proyecto_Api.DTO.PostDTO
+
+@{
+    ViewData["Title"] = "Detalle Post Creado";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="post-details">
+    <div class="form-group">
+        <label>POST ID:</label>
+        <span>@Model.id</span>
+    </div>
+    <div class="form-group">
+        <label>ID del Usuario:</label>
+        <span>@Model.userId</span>
+    </div>
+    <div class="form-group">
+        <label>Título:</label>
+        <span>@Model.title</span>
+    </div>
+    <div class="form-group">
+        <label>Cuerpo:</label>
+        <p>@Model.body</p>
+    </div>
+</div>
+
+<a href="@Url.Action("ListaPosts", "Post")" class="btn btn-secondary">Volver al inicio</a>
+
+@if (TempData["Excelente"] != null)
+{
+  <div class="alert alert-success" style="font-size: 22px; padding: 10px;">
+    @TempData["Excelente"]
+  </div>
+}

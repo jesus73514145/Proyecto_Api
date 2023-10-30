@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-
+using Microsoft.Extensions.Configuration.UserSecrets;
 namespace Proyecto_Api.DTO
 {
     public class PostDTO
     {
         [JsonProperty("userId")]
-        public int UserId { get; set; }
+        public int? userId { get; set; }
 
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int? id { get; set; }
 
         [JsonProperty("title")]
-        public string Title { get; set; }
+        public string? title { get; set; }
 
         [JsonProperty("body")]
-        public string Body { get; set; }
+        public string? body { get; set; }
 
     }
 }

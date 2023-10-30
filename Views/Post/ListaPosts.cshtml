@@ -1,0 +1,55 @@
+@model List<Proyecto_Api.DTO.PostDTO>
+
+@{
+    ViewData["Title"] = "Lista de Posts";
+}
+
+<br>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" style="font-size: 22px; padding: 10px;">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" style="font-size: 22px; padding: 10px;">
+        @TempData["Error"]
+    </div>
+}
+
+<h2>@ViewData["Title"]</h2>
+<br>
+<a asp-controller="Post" asp-action="CreatePost" class="btn btn-primary">Crear nuevo post</a>
+<br><br>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID del Usuario</th>
+            <th>ID del Post</th>
+            <th>Título</th>
+            <th>Cuerpo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td>@post.userId</td>
+                <td>@post.id</td>
+                <td>@post.title</td>
+                <td>@post.body</td>
+                <td>
+                    <a asp-controller="Post" asp-action="DetallePost" asp-route-id="@post.id" class="btn btn-warning">Detalle</a>
+                    <a asp-controller="Post" asp-action="EditPost" asp-route-id="@post.id" class="btn btn-warning">Editar</a>
+                    <a asp-controller="Post" asp-action="DeletePost" asp-route-id="@post.id" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este post?');">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

@@ -52,30 +52,35 @@ namespace Proyecto_Api.Integrations
         // Método para crear un nuevo post
         public async Task<PostDTO> CreatePostAsync(PostDTO post)
         {
-            string requestUrl = $"{API_URL}";
             try
             {
-                HttpResponseMessage response = await _client.PostAsJsonAsync(requestUrl, post);
+                string requestUrl = $"{API_URL}";
+
+                string postJson = JsonSerializer.Serialize(post);
+
+                HttpContent content = new StringContent(postJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _client.PostAsync(requestUrl, content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                 
-                    string content = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<PostDTO>(content);
+                    string responseJson = await response.Content.ReadAsStringAsync();
+                    PostDTO newPost = JsonSerializer.Deserialize<PostDTO>(responseJson);
+                    Console.WriteLine(responseJson);
+                    Console.WriteLine("Status Code " + response.StatusCode);
+                    return newPost;
                 }
                 else
                 {
-                   
-                    _logger.LogError($"Error al crear un nuevo registro. Código de estado: {response.StatusCode}");
-                    return null;
+                    _logger.LogError($"Error al crear el post. Codigo: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-             
-                _logger.LogError($"Error al crear un nuevo registro: {ex.Message}");
-                return null; 
+                _logger.LogError($"Error de API: {ex.Message}");
+
             }
+            return null;
         }
 
         // Método para obtener un post específico por ID
@@ -83,76 +88,89 @@ namespace Proyecto_Api.Integrations
         {
             try
             {
-                // Realiza una solicitud HTTP GET a la API externa para obtener el objeto por su ID
                 string requestUrl = $"{API_URL}{id}";
                 HttpResponseMessage response = await _client.GetAsync(requestUrl);
-
                 if (response.IsSuccessStatusCode)
                 {
-                    // Lee y deserializa el contenido de la respuesta en un objeto PostDTO
-                    string content = await response.Content.ReadAsStringAsync();
-                    PostDTO post = JsonSerializer.Deserialize<PostDTO>(content);
-                    return post;
+                    string post = await response.Content.ReadAsStringAsync();
+                    PostDTO p = JsonSerializer.Deserialize<PostDTO>(post);
+                    Console.WriteLine(p);
+                    return p;
                 }
                 else
                 {
-                    _logger.LogError($"La solicitud a la API no fue exitosa. Código de estado: {response.StatusCode}");
+                    _logger.LogError($"Error al buscar el post. Codigo: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-          
-                _logger.LogError($"Error al obtener el post con ID {id}: {ex.Message}");
+                _logger.LogError($"Error API: {ex.Message}");
             }
 
-          
             return null;
         }
 
      
         // Método para actualizar un post
-        public async Task<PostDTO> UpdatePostAsync(int id, PostDTO updatedPost)
+        public async Task<PostDTO> UpdatePostAsync(int id, PostDTO post)
         {
-            string requestUrl = $"{API_URL}{id}";
             try
             {
-                HttpResponseMessage response = await _client.PutAsJsonAsync(requestUrl, updatedPost);
+                string requestUrl = $"{API_URL}{id}";
+                string postJson = JsonSerializer.Serialize(post);
+                HttpContent content = new StringContent(postJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _client.PutAsync(requestUrl, content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Si la operación es exitosa, devuelve el objeto PostDTO actualizado
-                    string content = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<PostDTO>(content);
+                    string responseJson = await response.Content.ReadAsStringAsync();
+
+                    PostDTO updatedPost = JsonSerializer.Deserialize<PostDTO>(responseJson);
+                    Console.WriteLine(updatedPost);
+                    Console.WriteLine(responseJson);
+                    Console.WriteLine("Status Code " + response.StatusCode);
+                    Console.WriteLine(response.Content);
+
+                    return updatedPost;
                 }
-                else
-                {
-                    // Maneja el caso en que la solicitud no sea exitosa
-                    _logger.LogError($"Error al actualizar el registro. Código de estado: {response.StatusCode}");
-                    return null;
-                }
+
             }
             catch (Exception ex)
             {
-                // Maneja las excepciones que puedan ocurrir durante la solicitud
-                _logger.LogError($"Error al actualizar el registro: {ex.Message}");
-                return null; 
+                _logger.LogError($"Error API: {ex.Message}");
             }
+
+            return null;
         }
 
         // Método para eliminar un post
-        public async Task<bool> DeletePostAsync(int id)
+        public async Task<String> DeletePostAsync(int id)
         {
-            string requestUrl = $"{API_URL}{id}";
             try
             {
-                HttpResponseMessage response = await _client.DeleteAsync(requestUrl);
-                return response.IsSuccessStatusCode;
+                string url = $"{API_URL}{id}";
+
+                HttpResponseMessage response = await _client.DeleteAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseJson = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseJson);
+                    Console.WriteLine("Status Code: " + response.StatusCode);
+                    return response.StatusCode.ToString();
+                }
+                else
+                {
+                    _logger.LogError($"Error al eliminar el post. Codigo: {response.StatusCode}");
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogDebug($"Error al eliminar el registro: {ex.Message}");
-                return false;
+                _logger.LogError($"Error API: {ex.Message}");
             }
+
+            return "No se pudo eliminar";
         }
     }
+    
 }
